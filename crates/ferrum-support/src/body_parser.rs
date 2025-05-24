@@ -2,7 +2,7 @@ use ferrum_lambda::{error::ErrorKind, Error, Result};
 use lambda_http::Body;
 
 pub trait BodyParserProvider {
-  fn parse(body: &Body) -> Result<serde_json::Value>;
+  fn parse(&self, body: &Body) -> Result<serde_json::Value>;
 }
 
 pub struct BodyParser {}
@@ -14,7 +14,7 @@ impl BodyParser {
 }
 
 impl BodyParserProvider for BodyParser {
-  fn parse(body: &Body) -> Result<serde_json::Value> {
+  fn parse(&self, body: &Body) -> Result<serde_json::Value> {
     match body {
       Body::Text(body_str) => Ok(serde_json::from_str(body_str)?),
       Body::Binary(body_binary) => Ok(serde_json::from_slice(body_binary)?),
