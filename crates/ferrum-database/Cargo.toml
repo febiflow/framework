@@ -5,5 +5,8 @@ edition = "2024"
 
 [dependencies]
 async-trait = "0.1.88"
+dotenvy = "0.15"
 sqlx = { version = "0.8", features = [ "postgres", "uuid", "migrate", "macros", "runtime-tokio", "chrono" ] }
 tokio = { version = "1.43.0", features = ["full"] }
+
+ferrum-lambda = { path = "../ferrum-lambda" }

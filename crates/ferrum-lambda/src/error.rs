@@ -6,6 +6,14 @@ use serde::Serialize;
 pub enum ErrorKind {
   DeserializationError,
   InvalidRequestBody,
+  DatabaseConnectionError,
+  QueryExecutionError,
+  UnsupportedDatabaseConnection,
+  ConfigError,
+  EnvironmentError,
+  IOError,
+  TimeoutError,
+  Unknown,
 }
 
 #[derive(Debug, Serialize)]
@@ -20,27 +28,26 @@ impl fmt::Display for Error {
     }
 }
 
-impl Error {
-  pub fn deserialization(err: impl ToString) -> Self {
-      Self {
-          kind: ErrorKind::DeserializationError,
-          message: format!("Failed to parse request body: {}", err.to_string()),
-      }
-  }
-
-  pub fn invalid_body() -> Self {
-      Self {
-          kind: ErrorKind::InvalidRequestBody,
-          message: "The request body is missing or invalid.".into(),
-      }
-  }
-}
-
 impl From<serde_json::Error> for Error {
   fn from(err: serde_json::Error) -> Self {
       Error {
           kind: ErrorKind::DeserializationError,
           message: format!("Failed to parse request body: {}", err),
       }
+  }
+}
+
+impl From<sqlx::Error> for Error {
+  fn from(err: sqlx::Error) -> Self {
+      use sqlx::Error::*;
+      let (kind, msg) = match &err {
+          Configuration(_) => (ErrorKind::ConfigError, format!("DB config error: {}", err)),
+          Io(_) => (ErrorKind::IOError, format!("I/O error: {}", err)),
+          PoolTimedOut => (ErrorKind::TimeoutError, "Database pool timeout".into()),
+          Database(_) => (ErrorKind::QueryExecutionError, format!("Query error: {}", err)),
+          RowNotFound => (ErrorKind::QueryExecutionError, "Row not found".into()),
+          _ => (ErrorKind::DatabaseConnectionError, format!("Database connection failed: {}", err)),
+      };
+      Self { kind, message: msg }
   }
 }

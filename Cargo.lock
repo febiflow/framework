@@ -410,6 +410,8 @@ name = "ferrum-database"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "dotenvy",
+ "ferrum-lambda",
  "sqlx",
  "tokio",
 ]
@@ -429,6 +431,7 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "serde_json",
+ "sqlx",
 ]
 
 [[package]]
