@@ -7,3 +7,4 @@ edition = "2024"
 ferrum-database = { path = "../crates/ferrum-database" }
 ferrum-http = { path = "../crates/ferrum-http" }
 ferrum-lambda = { path = "../crates/ferrum-lambda" }
+ferrum-support = { path = "../crates/ferrum-support" }

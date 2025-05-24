@@ -2,7 +2,7 @@ use lambda_http::{http::StatusCode, Response as RawResponse};
 use serde::Serialize;
 use serde_json::json;
 
-pub trait IResponse {
+pub trait ResponseProvider {
   fn success<T: Serialize>(&self, data: &T) -> RawResponse<String>;
 
   fn success_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> RawResponse<String>;
@@ -43,7 +43,7 @@ impl Response {
   }
 }
 
-impl IResponse for Response {
+impl ResponseProvider for Response {
   fn success<T: Serialize>(&self, data: &T) -> RawResponse<String> {
     self.json_response(data, &StatusCode::OK)
   }

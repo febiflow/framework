@@ -133,6 +133,7 @@ dependencies = [
  "ferrum-database",
  "ferrum-http",
  "ferrum-lambda",
+ "ferrum-support",
 ]
 
 [[package]]
@@ -153,6 +154,16 @@ name = "ferrum-lambda"
 version = "0.1.0"
 dependencies = [
  "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "ferrum-support"
+version = "0.1.0"
+dependencies = [
+ "ferrum-lambda",
+ "lambda_http",
+ "serde_json",
 ]
 
 [[package]]
