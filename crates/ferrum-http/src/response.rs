@@ -1,27 +1,27 @@
-use lambda_http::{http::StatusCode, Response};
+use lambda_http::{http::StatusCode, Response as RawResponse};
 use serde::Serialize;
 use serde_json::json;
 
 pub trait IResponse {
-  fn success<T: Serialize>(&self, data: &T) -> Response<String>;
+  fn success<T: Serialize>(&self, data: &T) -> RawResponse<String>;
 
-  fn success_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> Response<String>;
+  fn success_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> RawResponse<String>;
 
-  fn created<T: Serialize>(&self, data: &T) -> Response<String>;
+  fn created<T: Serialize>(&self, data: &T) -> RawResponse<String>;
 
-  fn bad_request(&self, message: &str) -> Response<String>;
+  fn bad_request(&self, message: &str) -> RawResponse<String>;
 
-  fn unauthorized(&self) -> Response<String>;
+  fn unauthorized(&self) -> RawResponse<String>;
 
-  fn forbidden(&self, message: &str) -> Response<String>;
+  fn forbidden(&self, message: &str) -> RawResponse<String>;
 
-  fn not_found<T: Serialize>(&self, data: &T) -> Response<String>;
+  fn not_found<T: Serialize>(&self, data: &T) -> RawResponse<String>;
 
-  fn unprocessable_entity<T: Serialize>(&self, data: &T) -> Response<String>;
+  fn unprocessable_entity<T: Serialize>(&self, data: &T) -> RawResponse<String>;
 
-  fn server_error<T: Serialize>(&self, data: &T) -> Response<String>;
+  fn server_error<T: Serialize>(&self, data: &T) -> RawResponse<String>;
 
-  fn error_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> Response<String>;
+  fn error_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> RawResponse<String>;
 }
 
 pub struct Response;
@@ -31,8 +31,8 @@ impl Response {
     Response {}
   }
 
-  fn json_response<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> Response<String> {
-    Response::builder()
+  fn json_response<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> RawResponse<String> {
+    RawResponse::builder()
       .status(status_code)
       .header("Content-Type", "application/json")
       .header("Access-Control-Allow-Origin", "*")
@@ -44,49 +44,49 @@ impl Response {
 }
 
 impl IResponse for Response {
-  fn success<T: Serialize>(&self, data: &T) -> Response<String> {
+  fn success<T: Serialize>(&self, data: &T) -> RawResponse<String> {
     self.json_response(data, &StatusCode::OK)
   }
 
-  fn success_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> Response<String> {
+  fn success_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> RawResponse<String> {
     self.json_response(data, status_code)
   }
 
-  fn created<T: Serialize>(&self, data: &T) -> Response<String> {
+  fn created<T: Serialize>(&self, data: &T) -> RawResponse<String> {
     self.json_response(data, &StatusCode::CREATED)
   }
 
-  fn bad_request(&self, message: &str) -> Response<String> {
+  fn bad_request(&self, message: &str) -> RawResponse<String> {
     self.json_response(&json!({
       "message": message
     }), &StatusCode::BAD_REQUEST)
   }
 
-  fn unauthorized(&self) -> Response<String> {
+  fn unauthorized(&self) -> RawResponse<String> {
     self.json_response(&json!({
       "message": "Unauthorized."
     }), &StatusCode::UNAUTHORIZED)
   }
 
-  fn forbidden(&self, message: &str) -> Response<String> {
+  fn forbidden(&self, message: &str) -> RawResponse<String> {
     self.json_response(&json!({
       "message": message,
     }), &StatusCode::FORBIDDEN)
   }
 
-  fn not_found<T: Serialize>(&self, data: &T) -> Response<String> {
+  fn not_found<T: Serialize>(&self, data: &T) -> RawResponse<String> {
     self.json_response(data, &StatusCode::NOT_FOUND)
   }
 
-  fn unprocessable_entity<T: Serialize>(&self, data: &T) -> Response<String> {
+  fn unprocessable_entity<T: Serialize>(&self, data: &T) -> RawResponse<String> {
     self.json_response(data, &StatusCode::UNPROCESSABLE_ENTITY)
   }
 
-  fn server_error<T: Serialize>(&self, data: &T) -> Response<String> {
+  fn server_error<T: Serialize>(&self, data: &T) -> RawResponse<String> {
     self.json_response(data, &StatusCode::INTERNAL_SERVER_ERROR)
   }
 
-  fn error_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> Response<String> {
+  fn error_with_status<T: Serialize>(&self, data: &T, status_code: &StatusCode) -> RawResponse<String> {
     self.json_response(&data, status_code)
   }
 }
@@ -97,11 +97,11 @@ mod tests {
     use lambda_http::http::StatusCode;
     use serde_json::{json, Value};
 
-    fn get_response_body(response: &Response<String>) -> Value {
+    fn get_response_body(response: &RawResponse<String>) -> Value {
         serde_json::from_str(response.body()).unwrap_or_default()
     }
 
-    fn check_cors_headers(response: &Response<String>) {
+    fn check_cors_headers(response: &RawResponse<String>) {
         assert_eq!(
             response.headers().get("Content-Type").unwrap(),
             "application/json"

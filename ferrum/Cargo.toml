@@ -4,3 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+ferrum-database = { path = "../crates/ferrum-database" }
+ferrum-http = { path = "../crates/ferrum-http" }
