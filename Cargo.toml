@@ -1,6 +1,6 @@
 [workspace]
 members = [
   "crates/ferrum-database",
-  "crates/ferrum-http",
+  "crates/ferrum-http", "crates/ferrum-lambda",
   "ferrum",
 ]
