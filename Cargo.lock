@@ -396,28 +396,28 @@ dependencies = [
 ]
 
 [[package]]
-name = "ferrum"
+name = "febiflow"
 version = "0.1.0"
 dependencies = [
- "ferrum-database",
- "ferrum-http",
- "ferrum-lambda",
- "ferrum-support",
+ "febiflow-database",
+ "febiflow-http",
+ "febiflow-lambda",
+ "febiflow-support",
 ]
 
 [[package]]
-name = "ferrum-database"
+name = "febiflow-database"
 version = "0.1.0"
 dependencies = [
  "async-trait",
  "dotenvy",
- "ferrum-lambda",
+ "febiflow-lambda",
  "sqlx",
  "tokio",
 ]
 
 [[package]]
-name = "ferrum-http"
+name = "febiflow-http"
 version = "0.1.0"
 dependencies = [
  "lambda_http",
@@ -426,7 +426,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ferrum-lambda"
+name = "febiflow-lambda"
 version = "0.1.0"
 dependencies = [
  "serde",
@@ -435,10 +435,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "ferrum-support"
+name = "febiflow-support"
 version = "0.1.0"
 dependencies = [
- "ferrum-lambda",
+ "febiflow-lambda",
  "lambda_http",
  "serde",
  "serde_json",

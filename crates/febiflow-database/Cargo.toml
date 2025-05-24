@@ -1,5 +1,5 @@
 [package]
-name = "ferrum-database"
+name = "febiflow-database"
 version = "0.1.0"
 edition = "2024"
 
@@ -9,4 +9,4 @@ dotenvy = "0.15"
 sqlx = { version = "0.8", features = [ "postgres", "uuid", "migrate", "macros", "runtime-tokio", "chrono" ] }
 tokio = { version = "1.43.0", features = ["full"] }
 
-ferrum-lambda = { path = "../ferrum-lambda" }
+febiflow-lambda = { path = "../febiflow-lambda" }

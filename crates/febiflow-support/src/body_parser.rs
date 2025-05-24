@@ -1,4 +1,4 @@
-use ferrum_lambda::{error::ErrorKind, Error, Result};
+use febiflow_lambda::{error::ErrorKind, Error, Result};
 use lambda_http::Body;
 use serde::de::DeserializeOwned;
 use validator::Validate;
