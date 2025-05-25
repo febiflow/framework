@@ -14,6 +14,9 @@ pub enum ErrorKind {
   IOError,
   TimeoutError,
   Unknown,
+  EnvVarNotPresent,
+  JwtInvalidToken,
+  JwtInvalidSignature,
 }
 
 #[derive(Debug, Serialize)]
@@ -49,5 +52,29 @@ impl From<sqlx::Error> for Error {
           _ => (ErrorKind::DatabaseConnectionError, format!("Database connection failed: {}", err)),
       };
       Self { kind, message: msg }
+  }
+}
+
+impl From<std::env::VarError> for Error {
+  fn from(error: std::env::VarError) -> Self {
+    Error {
+      kind: ErrorKind::EnvVarNotPresent,
+      message: error.to_string()
+    }
+  }
+}
+
+impl From<jsonwebtoken::errors::Error> for Error {
+  fn from(error: jsonwebtoken::errors::Error) -> Self {
+    let jwt_error_kind = match error.kind() {
+      jsonwebtoken::errors::ErrorKind::InvalidToken { .. } => ErrorKind::JwtInvalidToken,
+      jsonwebtoken::errors::ErrorKind::InvalidSignature => ErrorKind::JwtInvalidSignature,
+      _ => ErrorKind::Unknown,
+    };
+
+    Error {
+      kind: jwt_error_kind,
+      message: error.to_string()
+    }
   }
 }

@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-febiflow-database = { path = "../crates/febiflow-database" }
-febiflow-http = { path = "../crates/febiflow-http" }
-febiflow-lambda = { path = "../crates/febiflow-lambda" }
-febiflow-support = { path = "../crates/febiflow-support" }
+febiflow-auth = { workspace = true }
+febiflow-database = { workspace = true }
+febiflow-http = { workspace = true }
+febiflow-lambda = { workspace = true }
+febiflow-support = { workspace = true }

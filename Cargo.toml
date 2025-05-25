@@ -1,8 +1,26 @@
 [workspace]
 members = [
+  "crates/febiflow-auth",
   "crates/febiflow-database",
   "crates/febiflow-http",
   "crates/febiflow-lambda",
   "crates/febiflow-support",
   "febiflow",
 ]
+
+[workspace.dependencies]
+dotenvy = "0.15"
+jsonwebtoken = "9"
+lambda_http = "0.14"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1.0.140"
+sqlx = { version = "0.8", features = [ "postgres", "uuid", "migrate", "macros", "runtime-tokio", "chrono" ] }
+tokio = { version = "1.43.0", features = ["full"] }
+uuid = { version = "1.17.0", features = ["v4", "serde"] }
+validator = { version = "0.20", features = ["derive"] }
+
+febiflow-auth = { path = "crates/febiflow-auth" }
+febiflow-database = { path = "crates/febiflow-database" }
+febiflow-http = { path = "crates/febiflow-http" }
+febiflow-lambda = { path = "crates/febiflow-lambda" }
+febiflow-support = { path = "crates/febiflow-support" }
