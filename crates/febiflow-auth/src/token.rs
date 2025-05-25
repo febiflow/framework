@@ -18,12 +18,12 @@ pub struct Token {
 }
 
 impl Token {
-  pub fn new() -> Result<Self, Error> {
-    let secret = env::var("APP_KEY")?;
+  pub fn new() -> Self {
+    let secret = env::var("APP_KEY").unwrap_or_default();
     let encoding_key = EncodingKey::from_secret(secret.as_bytes());
     let decoding_key = DecodingKey::from_secret(secret.as_bytes());
 
-    Ok(Token { encoding_key, decoding_key })
+    Token { encoding_key, decoding_key }
   }
 }
 
